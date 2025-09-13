@@ -16,8 +16,6 @@
     <Folder Include="FluentValidations\" />
     <Folder Include="Helpers\" />
     <Folder Include="Mappers\" />
-    <Folder Include="Repositories\" />
-    <Folder Include="Services\ServiceImplementations\" />
   </ItemGroup>
 
 </Project>
