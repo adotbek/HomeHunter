@@ -8,4 +8,6 @@ public class RefreshToken
     public bool IsRevoked { get; set; }
     public long UserId { get; set; }
     public User User { get; set; }
+    public long OwnerId { get; set; }
+    public Owner Owner { get; set; }
 }

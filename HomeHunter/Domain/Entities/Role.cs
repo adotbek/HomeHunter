@@ -7,4 +7,5 @@ public class Role
     public string Description { get; set; }
 
     public ICollection<User> Users { get; set; }
+    public ICollection<Owner> Owners { get; set; }
 }

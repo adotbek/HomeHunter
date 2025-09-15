@@ -11,6 +11,7 @@ public class Home
     public decimal Price { get; set; }
     public Category Category { get; set; }
     public int NumberOfRooms { get; set; }
+    public string Type { get; set; }
     public Image Image { get; set; }
     public string Status { get; set; }
 }

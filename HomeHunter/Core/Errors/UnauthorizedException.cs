@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace AutoLedger.Core.Errors;
+namespace Core.Errors;
 
 public class UnauthorizedException : BaseException
 {
