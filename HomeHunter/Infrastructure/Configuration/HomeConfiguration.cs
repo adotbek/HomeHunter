@@ -11,18 +11,20 @@ public class HomeConfiguration : IEntityTypeConfiguration<Home>
         builder.Property(h => h.Location).IsRequired();
         builder.Property(h => h.OwnerNumber).IsRequired().HasMaxLength(20);
         builder.Property(h => h.Bio).HasMaxLength(1000);
-        //builder.Property(h => h.Price).hascol("decimal(18,2)");
         builder.Property(h => h.Type).IsRequired().HasMaxLength(50);
         builder.Property(h => h.Status).IsRequired().HasMaxLength(50);
 
         builder.HasOne(h => h.Category)
                .WithMany(c => c.Homes);
+        builder.Property(h => h.IsAvailable)
+                     .HasDefaultValue(false);
 
-        builder.HasOne(h => h.Image)
-               .WithOne(i => i.Home)
-               .HasForeignKey<Image>(i => i.HomeId);
+        builder.HasMany(h => h.Images)
+        .WithOne(i => i.Home)
+        .HasForeignKey(i => i.HomeId)
+        .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne<Location>(/* navigation property Home ichida yo‘q bo‘lsa, qo‘shish kerak */);
-        builder.HasOne<Owner>(/* Home ga Owner qo‘shilsa, relationshipni bu yerga yozamiz */);
+        builder.HasOne<Location>();
+        builder.HasOne<Owner>();
     }
 }

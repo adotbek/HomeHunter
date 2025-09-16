@@ -1,42 +1,67 @@
-﻿using Application.Interfaces;
+﻿using Application.Interfaces.Repositories;
 using Domain.Entities;
+using Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Persistence.Repositories;
+namespace Infrastructure.Repositories;
 
-internal class UserRepository (AppDbContext appDbContext) : IUserRepository
+public class UserRepository(AppDbContext _context) : IUserRepository
 {
-    public Task DeleteUserById(long userId)
+    public async Task<long> AddUserAsync(User user)
     {
-        throw new NotImplementedException();
+        await _context.Users.AddAsync(user);
+        await _context.SaveChangesAsync();
+        return user.Id;
     }
 
-    public Task<List<User>> GetAllAsync()
+    public async Task UpdateUserAsync(User user)
     {
-        throw new NotImplementedException();
+        _context.Users.Update(user);
+        await _context.SaveChangesAsync();
     }
 
-    public Task<long> InsertUserAsync(User user)
+    public async Task DeleteUserAsync(long id)
     {
-        throw new NotImplementedException();
+        var user = await _context.Users.FindAsync(id);
+        if (user != null)
+        {
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+        }
     }
 
-    public Task<User?> SelectByEmailAsync(string email)
+    public async Task<User?> GetByIdAsync(long id)
     {
-        throw new NotImplementedException();
+        return await _context.Users
+            .Include(u => u.Role)
+            .Include(u => u.RefreshTokens)
+            .FirstOrDefaultAsync(u => u.Id == id);
     }
 
-    public Task<User?> SelectUserByIdAsync(long id)
+    public async Task<ICollection<User>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        return await _context.Users
+            .Include(u => u.Role)
+            .Include(u => u.RefreshTokens)
+            .ToListAsync();
     }
 
-    public Task<User?> SelectUserByUserNameAsync(string userName)
+    public async Task<User?> GetByNameAsync(string userName)
     {
-        throw new NotImplementedException();
+        return await _context.Users
+            .FirstOrDefaultAsync(u => u.UserName == userName);
     }
 
-    public Task UpdateUserRoleAsync(long userId, long userRoleId)
+    public async Task<User?> GetByEmailAsync(string email)
     {
-        throw new NotImplementedException();
+        return await _context.Users
+            .FirstOrDefaultAsync(u => u.Email == email);
+    }
+
+    public async Task<ICollection<User>> GetByRoleIdAsync(long roleId)
+    {
+        return await _context.Users
+            .Where(u => u.RoleId == roleId)
+            .ToListAsync();
     }
 }

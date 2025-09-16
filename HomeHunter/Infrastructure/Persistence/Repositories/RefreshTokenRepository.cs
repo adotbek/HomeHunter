@@ -1,28 +1,39 @@
-﻿using Application.Interfaces;
+﻿using Application.Interfaces.Repositories;
 using Domain.Entities;
+using Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Persistence.Repositories
+namespace Infrastructure.Repositories;
+
+public class RefreshTokenRepository(AppDbContext _context) : IRefreshTokenRepository
 {
-    public class RefreshTokenRepository : IRefreshTokenRepository
+    public async Task GetRefreshTokenAsync(RefreshToken refreshToken)
     {
-        public Task InsertRefreshTokenAsync(RefreshToken refreshToken)
-        {
-            throw new NotImplementedException();
-        }
+        await _context.RefreshTokens.AddAsync(refreshToken);
+        await _context.SaveChangesAsync();
+    }
 
-        public Task RemoveRefreshTokenAsync(string token)
-        {
-            throw new NotImplementedException();
-        }
+    public async Task<RefreshToken?> GetRefreshTokenAsync(string refreshToken, long userId)
+    {
+        return await _context.RefreshTokens
+            .FirstOrDefaultAsync(rt => rt.Token == refreshToken && rt.UserId == userId && !rt.IsRevoked);
+    }
 
-        public Task<RefreshToken?> SelectActiveTokenByUserIdAsync(long userId)
-        {
-            throw new NotImplementedException();
-        }
+    public async Task<RefreshToken?> GetActiveTokenByUserIdAsync(long userId)
+    {
+        return await _context.RefreshTokens
+            .Where(rt => rt.UserId == userId && rt.Expires > DateTime.UtcNow && !rt.IsRevoked)
+            .OrderByDescending(rt => rt.Expires)
+            .FirstOrDefaultAsync();
+    }
 
-        public Task<RefreshToken> SelectRefreshTokenAsync(string refreshToken, long userId)
+    public async Task RemoveRefreshTokenAsync(string token)
+    {
+        var refreshToken = await _context.RefreshTokens.FirstOrDefaultAsync(rt => rt.Token == token);
+        if (refreshToken != null)
         {
-            throw new NotImplementedException();
+            _context.RefreshTokens.Remove(refreshToken);
+            await _context.SaveChangesAsync();
         }
     }
 }

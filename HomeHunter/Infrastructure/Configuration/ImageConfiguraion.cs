@@ -12,7 +12,8 @@ public class ImageConfiguration : IEntityTypeConfiguration<Image>
                .IsRequired();
 
         builder.HasOne(i => i.Home)
-               .WithOne(h => h.Image)
-               .HasForeignKey<Image>(i => i.HomeId);
+               .WithMany(h => h.Images) 
+               .HasForeignKey(i => i.HomeId)
+               .OnDelete(DeleteBehavior.Cascade);
     }
 }

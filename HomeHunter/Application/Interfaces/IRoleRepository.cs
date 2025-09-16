@@ -1,14 +1,17 @@
 ﻿using Domain.Entities;
 
-namespace Application.Interfaces;
+namespace Application.Interfaces.Repositories;
 
 public interface IRoleRepository
 {
-    Task<ICollection<Role>> SelectAllRolesAsync();
-    Task<ICollection<User>> SelectAllUsersByRoleNameAsync(string roleName);
-    Task<Role> SelectUserRoleByRoleNameAsync(string userRoleName);
-    Task<long> InsertUserRoleAsync(Role userRole);
-    Task<long> SelectRoleIdByNameAsync(string roleName);
-    Task DeleteUserRoleAsync(Role userRole);
-    Task UpdateUserRoleAsync(Role userRole);
+    Task<long> AddRoleAsync(Role role);
+    Task UpdateRoleAsync(Role role);
+    Task DeleteRoleAsync(long roleId);
+
+    Task<Role?> GetByIdAsync(long roleId);
+    Task<ICollection<Role>> GetAllAsync();
+
+    Task<Role?> GetByNameAsync(string roleName);
+    Task<ICollection<User>> GetUsersByRoleAsync(long roleId);
+    Task<ICollection<Owner>> GetOwnersByRoleAsync(long roleId);
 }

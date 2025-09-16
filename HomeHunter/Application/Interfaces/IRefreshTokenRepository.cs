@@ -1,11 +1,11 @@
 ﻿using Domain.Entities;
 
-namespace Application.Interfaces;
+namespace Application.Interfaces.Repositories;
 
 public interface IRefreshTokenRepository
 {
-    Task InsertRefreshTokenAsync(RefreshToken refreshToken);
-    Task<RefreshToken> SelectRefreshTokenAsync(string refreshToken, long userId);
-    Task<RefreshToken?> SelectActiveTokenByUserIdAsync(long userId);
+    Task GetRefreshTokenAsync(RefreshToken refreshToken);
+    Task<RefreshToken?> GetRefreshTokenAsync(string refreshToken, long userId);
+    Task<RefreshToken?> GetActiveTokenByUserIdAsync(long userId);
     Task RemoveRefreshTokenAsync(string token);
 }

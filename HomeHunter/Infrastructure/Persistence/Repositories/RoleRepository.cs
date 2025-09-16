@@ -1,54 +1,68 @@
-﻿using Application.Interfaces;
+﻿using Application.Interfaces.Repositories;
 using Domain.Entities;
+using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Persistence.Repositories;
+namespace Infrastructure.Repositories;
 
-public class RoleRepository (AppDbContext appDbContext) : IRoleRepository
+public class RoleRepository(AppDbContext _context) : IRoleRepository
 {
-    public async Task DeleteUserRoleAsync(Role userRole)
+    public async Task<long> AddRoleAsync(Role role)
     {
-        appDbContext.Remove(userRole);
-        await appDbContext.SaveChangesAsync();
-    }
-
-    public async Task<long> InsertUserRoleAsync(Role userRole)
-    {
-        await appDbContext.AddAsync(userRole);
-        await appDbContext.SaveChangesAsync();
-        return userRole.RoleId;
-    }
-
-    public async Task<ICollection<Role>> SelectAllRolesAsync()
-    {
-        return await appDbContext.UserRoles.ToListAsync();
-    }
-
-    public Task<ICollection<User>> SelectAllUsersByRoleNameAsync(string roleName)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<long> SelectRoleIdByNameAsync(string roleName)
-    {
-        var role = await appDbContext.UserRoles.FirstOrDefaultAsync(x => x.Name == roleName);
-        if (role is null)
-        {
-            throw new Exception();
-        }
+        await _context.Roles.AddAsync(role);
+        await _context.SaveChangesAsync();
         return role.RoleId;
     }
 
-    public async Task<Role> SelectUserRoleByRoleNameAsync(string userRoleName)
+    public async Task UpdateRoleAsync(Role role)
     {
-        var rolse = await appDbContext.UserRoles
-            .FirstOrDefaultAsync(r => r.Name == userRoleName);
-        return rolse ?? throw new Exception($"Role with name '{userRoleName}' not found."); 
-
+        _context.Roles.Update(role);
+        await _context.SaveChangesAsync();
     }
 
-    public Task UpdateUserRoleAsync(Role userRole)
+    public async Task DeleteRoleAsync(long roleId)
     {
-        throw new NotImplementedException();
+        var role = await _context.Roles.FindAsync(roleId);
+        if (role != null)
+        {
+            _context.Roles.Remove(role);
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    public async Task<Role?> GetByIdAsync(long roleId)
+    {
+        return await _context.Roles
+            .Include(r => r.Users)
+            .Include(r => r.Owners)
+            .FirstOrDefaultAsync(r => r.RoleId == roleId);
+    }
+
+    public async Task<ICollection<Role>> GetAllAsync()
+    {
+        return await _context.Roles
+            .Include(r => r.Users)
+            .Include(r => r.Owners)
+            .ToListAsync();
+    }
+
+    public async Task<Role?> GetByNameAsync(string roleName)
+    {
+        return await _context.Roles
+            .FirstOrDefaultAsync(r => r.Name == roleName);
+    }
+
+    public async Task<ICollection<User>> GetUsersByRoleAsync(long roleId)
+    {
+        return await _context.Users
+            .Where(u => u.RoleId == roleId)
+            .ToListAsync();
+    }
+
+    public async Task<ICollection<Owner>> GetOwnersByRoleAsync(long roleId)
+    {
+        return await _context.Owners
+            .Where(o => o.RoleId == roleId)
+            .ToListAsync();
     }
 }
