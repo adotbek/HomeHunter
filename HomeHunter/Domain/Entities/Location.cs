@@ -10,5 +10,5 @@ public class Location
     public string? HouseNumber { get; set; }
     public string? ZipCode { get; set; }
     public string? Landmark { get; set; }
-    public ICollection<Home> Homes { get; set; } = new List<Home>();
+    public ICollection<Home> Homes { get; set; } 
 }

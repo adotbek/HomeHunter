@@ -34,7 +34,6 @@ public class RoleRepository(AppDbContext _context) : IRoleRepository
     {
         return await _context.Roles
             .Include(r => r.Users)
-            .Include(r => r.Owners)
             .FirstOrDefaultAsync(r => r.RoleId == roleId);
     }
 
@@ -42,7 +41,6 @@ public class RoleRepository(AppDbContext _context) : IRoleRepository
     {
         return await _context.Roles
             .Include(r => r.Users)
-            .Include(r => r.Owners)
             .ToListAsync();
     }
 
@@ -56,13 +54,6 @@ public class RoleRepository(AppDbContext _context) : IRoleRepository
     {
         return await _context.Users
             .Where(u => u.RoleId == roleId)
-            .ToListAsync();
-    }
-
-    public async Task<ICollection<Owner>> GetOwnersByRoleAsync(long roleId)
-    {
-        return await _context.Owners
-            .Where(o => o.RoleId == roleId)
             .ToListAsync();
     }
 }

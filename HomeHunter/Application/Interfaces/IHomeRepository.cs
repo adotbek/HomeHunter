@@ -11,7 +11,6 @@ public interface IHomeRepository
     Task<ICollection<Home>> GetPagedHomesAsync(int pageNumber, int pageSize, string? sortBy = null, bool ascending = true);
     Task<ICollection<Home>> GetHomesByLocationAsync();
     Task<ICollection<Home>> GetHomesBetweenAsync(decimal minPrice, decimal maxPrice);
-    Task<ICollection<Home>> GetHomesByOwnerAsync(long ownerId);
     Task<ICollection<Home>> GetHomesByCountOfRoomsAsync(int minCount, int maxCount);
     Task ReportHomeAsync(long homeId, string reason);
 

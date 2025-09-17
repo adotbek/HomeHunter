@@ -8,7 +8,6 @@ public class HomeConfiguration : IEntityTypeConfiguration<Home>
     {
         builder.HasKey(h => h.Id);
 
-        builder.Property(h => h.Location).IsRequired();
         builder.Property(h => h.OwnerNumber).IsRequired().HasMaxLength(20);
         builder.Property(h => h.Bio).HasMaxLength(1000);
         builder.Property(h => h.Type).IsRequired().HasMaxLength(50);
@@ -25,6 +24,5 @@ public class HomeConfiguration : IEntityTypeConfiguration<Home>
         .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne<Location>();
-        builder.HasOne<Owner>();
     }
 }

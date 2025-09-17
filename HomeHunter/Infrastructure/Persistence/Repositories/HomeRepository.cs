@@ -34,7 +34,6 @@ public class HomeRepository(AppDbContext _context) : IHomeRepository
     {
         return await _context.Homes
             .Include(h => h.Category)
-            .Include(h => h.Owner)
             .Include(h => h.Location)
             .Include(h => h.Images)
             .FirstOrDefaultAsync(h => h.Id == id);
@@ -48,7 +47,6 @@ public class HomeRepository(AppDbContext _context) : IHomeRepository
     {
         IQueryable<Home> query = _context.Homes
             .Include(h => h.Category)
-            .Include(h => h.Owner)
             .Include(h => h.Location);
 
         if (!string.IsNullOrEmpty(sortBy))
@@ -83,14 +81,6 @@ public class HomeRepository(AppDbContext _context) : IHomeRepository
             .ToListAsync();
     }
 
-    public async Task<ICollection<Home>> GetHomesByOwnerAsync(long ownerId)
-    {
-        return await _context.Homes
-            .Where(h => h.Owner.Id == ownerId)
-            .Include(h => h.Category)
-            .Include(h => h.Location)
-            .ToListAsync();
-    }
 
     public async Task<ICollection<Home>> GetHomesByCountOfRoomsAsync(int minCount, int maxCount)
     {

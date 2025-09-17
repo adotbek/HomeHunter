@@ -15,7 +15,6 @@ public class Home
     public bool IsAvailable { get; set; } = false;
     public string Status { get; set; }
     public long OwnerId { get; set; }
-    public Owner Owner { get; set; }
     public long LocationId { get; set; }
     public Location Location { get; set; }
 }

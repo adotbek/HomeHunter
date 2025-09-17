@@ -22,9 +22,5 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
                .HasForeignKey(u => u.RoleId)
                .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasMany(r => r.Owners)
-               .WithOne(o => o.Role)
-               .HasForeignKey(o => o.RoleId)
-               .OnDelete(DeleteBehavior.Restrict);
     }
 }
