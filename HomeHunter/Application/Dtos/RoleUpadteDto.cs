@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Dtos
+namespace Application.Dtos;
+
+public class RoleUpadteDto
 {
-    internal class RoleUpadteDto
-    {
-    }
+    public long RoleId { get; set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
 }
