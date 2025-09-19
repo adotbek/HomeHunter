@@ -14,6 +14,6 @@ public class UserDto
     public string PasswordSalt { get; set; }
     public int Age { get; set; }
     public long RoleId { get; set; }
-    public Role Role { get; set; }
+    public string Role { get; set; }
     public ICollection<RefreshToken> RefreshTokens { get; set; }
 }

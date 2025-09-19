@@ -10,4 +10,4 @@ public class LocationUpdateDto
     public string? HouseNumber { get; set; }
     public string? ZipCode { get; set; }
 }
-}
+
