@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.Dtos;
+using FluentValidation;
 
-namespace Application.FluentValidations
+public class ImageCreateDtoValidator : AbstractValidator<ImageCreateDto>
 {
-    internal class ImageCreateDtoValidator
+    public ImageCreateDtoValidator()
     {
+        RuleFor(x => x.ImageUrl)
+            .NotEmpty().WithMessage("Image URL is required")
+            .Must(url => Uri.IsWellFormedUriString(url, UriKind.Absolute))
+            .WithMessage("Image URL must be a valid absolute URL");
+
+        RuleFor(x => x.HomeId)
+            .GreaterThan(0).WithMessage("HomeId must be a positive number");
     }
 }

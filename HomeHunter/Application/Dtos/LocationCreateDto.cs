@@ -2,7 +2,7 @@
 
 namespace Application.Dtos;
 
-public class LocaationCreateDto
+public class LocationCreateDto
 {
     public string Country { get; set; }
     public string City { get; set; }

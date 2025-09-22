@@ -2,7 +2,7 @@
 
 namespace Application.Dtos;
 
-public class UserCrearteDto
+public class UserCreateDto
 {
     public string FirstName { get; set; }
     public string SecondName { get; set; }

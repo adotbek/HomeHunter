@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.Dtos;
+using FluentValidation;
 
-namespace Application.FluentValidations
+public class CategoryCreateDtoValidator : AbstractValidator<CategoryDto>
 {
-    internal class CategoryCreateDtoValidator
+    public CategoryCreateDtoValidator()
     {
+        RuleFor(x => x.Name)
+            .NotEmpty().WithMessage("Category name is required")
+            .MaximumLength(100).WithMessage("Category name must be less than 100 characters");
     }
 }
