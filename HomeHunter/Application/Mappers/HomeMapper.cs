@@ -1,12 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.Dtos;
+using Domain.Entities;
 
-namespace Application.Mappers
+namespace Application.Mappers;
+
+public class HomeMapper
 {
-    internal class HomeMapper
+    public static Home ToHomeEntity(HomeCreateDto dto)
     {
+        return new Home
+        {
+            Bio = dto.Bio,
+            Price = dto.Price,
+            OwnerNumber = dto.OwnerNumber,
+            Type = dto.Type,
+            NumberOfRooms = dto.NumberOfRooms,
+            IsAvailable = dto.IsAvailable,
+            LocationId = dto.LocationId,
+            CategoryId = dto.CategoryId
+        };
+    }
+    public static HomeDto ToHomeDto(Home home)
+    {
+        return new HomeDto
+        {
+            Bio = home.Bio,
+            Type = home.Type,
+            Price = home.Price,
+            OwnerNumber = home.OwnerNumber,
+            CategoryId = home.CategoryId,
+            LocationId = home.LocationId,
+            IsAvailable = home.IsAvailable,
+
+        };
+
     }
 }

@@ -1,12 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.Dtos;
+using Domain.Entities;
 
-namespace Application.Mappers
+namespace Application.Mappers;
+
+public class LocationMapper
 {
-    internal class LocationMapper
+    public static Location ToLocationEntity (LocationCreateDto dto)
     {
+        return new Location
+        {
+            Country = dto.Country,
+            City = dto.City,
+            District = dto.District,
+            Street = dto.Street,
+            HouseNumber = dto.HouseNumber,
+            ZipCode = dto.ZipCode,
+        };
     }
+    
+
 }
+

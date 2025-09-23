@@ -1,12 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.Dtos;
+using Domain.Entities;
 
-namespace Application.Mappers
+namespace Application.Mappers;
+
+public class CategoryMapper
 {
-    internal class CategoryMapper
+     public static Category ToCategoryEntity (CategoryDto dto)
     {
+        return new Category
+        {
+            Name = dto.Name,
+        };
+    }
+    public static CategoryDto ToCategoryDto (Category category)
+    {
+        return new CategoryDto
+        {
+            Name = category.Name
+        };
     }
 }

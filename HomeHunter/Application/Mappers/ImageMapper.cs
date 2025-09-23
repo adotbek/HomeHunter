@@ -1,12 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.Dtos;
+using Domain.Entities;
 
-namespace Application.Mappers
+namespace Application.Mappers;
+
+public class ImageMapper
 {
-    internal class ImageMapper
+    public static Image ToImageEntity (ImageCreateDto dto)
     {
+        return new Image
+        {
+            HomeId = dto.HomeId,
+            ImageUrl = dto.ImageUrl
+        };
+    }
+    public static ImageDto ToImageDto (Image image)
+    {
+        return new ImageDto
+        {
+            HomeId = image.HomeId,
+            ImageUrl = image.ImageUrl
+        };
     }
 }
