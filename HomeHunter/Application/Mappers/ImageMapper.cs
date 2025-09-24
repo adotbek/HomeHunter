@@ -17,6 +17,7 @@ public class ImageMapper
     {
         return new ImageDto
         {
+            Id = image.Id,
             HomeId = image.HomeId,
             ImageUrl = image.ImageUrl
         };

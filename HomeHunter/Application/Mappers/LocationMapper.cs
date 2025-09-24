@@ -17,7 +17,19 @@ public class LocationMapper
             ZipCode = dto.ZipCode,
         };
     }
-    
+    public static LocationDto ToLocationDto (Location location)
+    {
+        return new LocationDto
+        {
+            Id = location.Id,
+            Country = location.Country,
+            City = location.City,
+            District = location.District,
+            Street = location.Street,
+            HouseNumber = location.HouseNumber,
+            ZipCode = location.ZipCode,
+        };
+    }
 
 }
 

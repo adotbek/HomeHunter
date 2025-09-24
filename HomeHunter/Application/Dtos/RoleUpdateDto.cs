@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Dtos;
 
-public class RoleUpadteDto
+public class RoleUpdateDto
 {
     public long RoleId { get; set; }
     public string Name { get; set; }

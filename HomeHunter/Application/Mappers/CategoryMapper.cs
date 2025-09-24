@@ -16,6 +16,7 @@ public class CategoryMapper
     {
         return new CategoryDto
         {
+            Id = category.Id,
             Name = category.Name
         };
     }

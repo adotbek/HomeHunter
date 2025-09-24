@@ -23,6 +23,7 @@ public class HomeMapper
     {
         return new HomeDto
         {
+            Id = home.Id,
             Bio = home.Bio,
             Type = home.Type,
             Price = home.Price,
