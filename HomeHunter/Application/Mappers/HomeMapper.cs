@@ -31,8 +31,9 @@ public class HomeMapper
             CategoryId = home.CategoryId,
             LocationId = home.LocationId,
             IsAvailable = home.IsAvailable,
-
+            NumberOfRooms = home.NumberOfRooms,
+            ImageUrls = home.Images?.Select(i => i.ImageUrl).ToList() ?? new List<string>()
         };
-
     }
+
 }

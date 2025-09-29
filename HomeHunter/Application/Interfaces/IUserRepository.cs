@@ -12,4 +12,5 @@ public interface IUserRepository
     Task<User?> GetByNameAsync(string userName);
     Task<User?> GetByEmailAsync(string email);
     Task<ICollection<User>> GetByRoleIdAsync(long roleId);
+
 }
