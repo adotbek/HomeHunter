@@ -10,6 +10,7 @@ public class User
     public string UserName { get; set; }
     public string PasswordHash { get; set; }
     public string PasswordSalt { get; set; }
+    public UserConfirm? Confirmer { get; set; }
     public int Age { get; set; }
     public long RoleId { get; set; }
     public Role Role { get; set; }
