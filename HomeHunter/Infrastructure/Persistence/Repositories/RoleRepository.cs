@@ -44,10 +44,11 @@ public class RoleRepository(AppDbContext _context) : IRoleRepository
             .ToListAsync();
     }
 
-    public async Task<Role?> GetByNameAsync(string roleName)
+    public async Task<long> GetRoleIdByNameAsync(string roleName)
     {
-        return await _context.Roles
+        var role =  await _context.Roles
             .FirstOrDefaultAsync(r => r.Name == roleName);
+        return role.RoleId;
     }
 
     public async Task<ICollection<User>> GetUsersByRoleAsync(long roleId)

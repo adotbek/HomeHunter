@@ -2,6 +2,6 @@
 
 public interface IPasswordHasher
 {
-    (string Hash, string Salt) Hash(string password);
-    bool Verify(string password, string hash, string salt);
+    //(string Hash, string Salt) Hasher(string password);
+    //bool Verify(string password, string hash, string salt);
 }

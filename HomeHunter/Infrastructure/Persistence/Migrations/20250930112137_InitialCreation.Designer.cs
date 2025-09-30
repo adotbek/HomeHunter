@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250917044222_InitialCreation")]
+    [Migration("20250930112137_InitialCreation")]
     partial class InitialCreation
     {
         /// <inheritdoc />
@@ -67,17 +67,8 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<long>("LocationId")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("LocationId1")
-                        .HasColumnType("bigint");
-
                     b.Property<int>("NumberOfRooms")
                         .HasColumnType("int");
-
-                    b.Property<long>("OwnerId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("OwnerId1")
-                        .HasColumnType("bigint");
 
                     b.Property<string>("OwnerNumber")
                         .IsRequired()
@@ -85,6 +76,7 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Status")
@@ -102,12 +94,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("LocationId");
-
-                    b.HasIndex("LocationId1");
-
-                    b.HasIndex("OwnerId");
-
-                    b.HasIndex("OwnerId1");
 
                     b.ToTable("Homes");
                 });
@@ -179,60 +165,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("Locations");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Owner", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordSalt")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<long>("RoleId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("SecondName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("Owners");
-                });
-
             modelBuilder.Entity("Domain.Entities.RefreshToken", b =>
                 {
                     b.Property<long>("RefreshTokenId")
@@ -259,8 +191,6 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("RefreshTokenId");
-
-                    b.HasIndex("OwnerId");
 
                     b.HasIndex("UserId");
 
@@ -355,6 +285,10 @@ namespace Infrastructure.Persistence.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<string>("ProfileImgUrl")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
                     b.Property<long>("RoleId")
                         .HasColumnType("bigint");
 
@@ -375,6 +309,46 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Domain.Entities.UserConfirm", b =>
+                {
+                    b.Property<long>("ConfirmerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("ConfirmerId"));
+
+                    b.Property<string>("ConfirmingCode")
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("ExpiredDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("DATEADD(MINUTE, 10, GETUTCDATE())");
+
+                    b.Property<bool>("IsConfirmed")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("ConfirmerId");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Confirmers", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.Home", b =>
                 {
                     b.HasOne("Domain.Entities.Category", "Category")
@@ -389,25 +363,9 @@ namespace Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Location", null)
-                        .WithMany()
-                        .HasForeignKey("LocationId1");
-
-                    b.HasOne("Domain.Entities.Owner", "Owner")
-                        .WithMany("Homes")
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Owner", null)
-                        .WithMany()
-                        .HasForeignKey("OwnerId1");
-
                     b.Navigation("Category");
 
                     b.Navigation("Location");
-
-                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("Domain.Entities.Image", b =>
@@ -421,30 +379,12 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("Home");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Owner", b =>
-                {
-                    b.HasOne("Domain.Entities.Role", "Role")
-                        .WithMany("Owners")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Role");
-                });
-
             modelBuilder.Entity("Domain.Entities.RefreshToken", b =>
                 {
-                    b.HasOne("Domain.Entities.Owner", "Owner")
-                        .WithMany("RefreshTokens")
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Domain.Entities.User", "User")
                         .WithMany("RefreshTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Owner");
 
                     b.Navigation("User");
                 });
@@ -479,6 +419,17 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("Domain.Entities.UserConfirm", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithOne("Confirmer")
+                        .HasForeignKey("Domain.Entities.UserConfirm", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Domain.Entities.Category", b =>
                 {
                     b.Navigation("Homes");
@@ -494,22 +445,15 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("Homes");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Owner", b =>
-                {
-                    b.Navigation("Homes");
-
-                    b.Navigation("RefreshTokens");
-                });
-
             modelBuilder.Entity("Domain.Entities.Role", b =>
                 {
-                    b.Navigation("Owners");
-
                     b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
+                    b.Navigation("Confirmer");
+
                     b.Navigation("RefreshTokens");
                 });
 #pragma warning restore 612, 618

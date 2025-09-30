@@ -3,6 +3,7 @@
 public class User
 {
     public long Id { get; set; }
+
     public string FirstName { get; set; }
     public string SecondName { get; set; }
     public string PhoneNumber { get; set; }
@@ -15,4 +16,5 @@ public class User
     public long RoleId { get; set; }
     public Role Role { get; set; }
     public ICollection<RefreshToken> RefreshTokens { get; set; }
+    public string? ProfileImgUrl { get; set; }
 }

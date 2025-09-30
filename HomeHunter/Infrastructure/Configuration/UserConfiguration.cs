@@ -21,5 +21,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasMany(u => u.RefreshTokens)
                .WithOne(rt => rt.User)
                .HasForeignKey(rt => rt.UserId);
+       
+        builder.Property(u => u.ProfileImgUrl)
+       .HasMaxLength(255); 
+
     }
 }

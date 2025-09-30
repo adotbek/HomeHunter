@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces.Repositories;
+using Core.Errors;
 using Domain.Entities;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -63,5 +64,14 @@ public class UserRepository(AppDbContext _context) : IUserRepository
         return await _context.Users
             .Where(u => u.RoleId == roleId)
             .ToListAsync();
+    }
+    public async Task<User> GetByUserNameAsync(string userName)
+    {
+        var user = await _context.Users.Include(_ => _.Confirmer).Include(_ => _.Role).FirstOrDefaultAsync(x => x.UserName == userName);
+        if (user == null)
+        {
+            throw new EntityNotFoundException($"Entity with {userName} not found");
+        }
+        return user;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces.Repositories;
+using Core.Errors;
 using Domain.Entities;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,11 @@ namespace Infrastructure.Repositories;
 
 public class RefreshTokenRepository(AppDbContext _context) : IRefreshTokenRepository
 {
+    public async Task AddRefreshToken(RefreshToken refreshToken)
+    {
+        await _context.RefreshTokens.AddAsync(refreshToken);
+        await _context.SaveChangesAsync();
+    }
     public async Task GetRefreshTokenAsync(RefreshToken refreshToken)
     {
         await _context.RefreshTokens.AddAsync(refreshToken);
@@ -35,5 +41,14 @@ public class RefreshTokenRepository(AppDbContext _context) : IRefreshTokenReposi
             _context.RefreshTokens.Remove(refreshToken);
             await _context.SaveChangesAsync();
         }
+    }
+    public async Task DeleteRefreshToken(string refreshToken)
+    {
+        var token = await _context.RefreshTokens.FirstOrDefaultAsync(rt => rt.Token == refreshToken);
+        if (token == null)
+        {
+            throw new EntityNotFoundException($"Refresh token not found {refreshToken}");
+        }
+        _context.RefreshTokens.Remove(token);
     }
 }

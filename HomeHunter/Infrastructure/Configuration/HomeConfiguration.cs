@@ -13,6 +13,9 @@ public class HomeConfiguration : IEntityTypeConfiguration<Home>
         builder.Property(h => h.Type).IsRequired().HasMaxLength(50);
         builder.Property(h => h.Status).IsRequired().HasMaxLength(50);
 
+        builder.Property(h => h.Price)
+        .HasPrecision(18, 2);
+
         builder.HasOne(h => h.Category)
                .WithMany(c => c.Homes);
         builder.Property(h => h.IsAvailable)
@@ -23,6 +26,8 @@ public class HomeConfiguration : IEntityTypeConfiguration<Home>
         .HasForeignKey(i => i.HomeId)
         .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne<Location>();
+        //builder.HasOne<Location>()
+        //    .WithMany(h=>h.Homes)
+        //    ;
     }
 }

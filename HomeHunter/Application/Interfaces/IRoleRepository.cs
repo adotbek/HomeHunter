@@ -9,6 +9,6 @@ public interface IRoleRepository
     Task DeleteRoleAsync(long roleId);
     Task<Role?> GetByIdAsync(long roleId);
     Task<ICollection<Role>> GetAllAsync();
-    Task<Role?> GetByNameAsync(string roleName);
+    Task<long> GetRoleIdByNameAsync(string roleName);
     Task<ICollection<User>> GetUsersByRoleAsync(long roleId);
 }

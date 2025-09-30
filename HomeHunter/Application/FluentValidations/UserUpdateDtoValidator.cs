@@ -1,7 +1,7 @@
 ﻿using Application.Dtos;
 using FluentValidation;
 
-public class UserUpdateDtoValidator : AbstractValidator<UserDto>
+public class UserUpdateDtoValidator : AbstractValidator<UserGetDto>
 {
     public UserUpdateDtoValidator()
     {
@@ -30,10 +30,5 @@ public class UserUpdateDtoValidator : AbstractValidator<UserDto>
             .MinimumLength(3).WithMessage("Username must be at least 3 characters long")
             .MaximumLength(50).WithMessage("Username must be less than 50 characters");
 
-        RuleFor(x => x.Age)
-            .GreaterThanOrEqualTo(18).WithMessage("User must be at least 18 years old");
-
-        RuleFor(x => x.RoleId)
-            .GreaterThan(0).WithMessage("RoleId must be positive");
     }
 }

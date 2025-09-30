@@ -15,6 +15,7 @@ public class Home
     public ICollection<Image> Images { get; set; }
     public bool IsAvailable { get; set; } = false;
     public string Status { get; set; }
+
     public long LocationId { get; set; }
     public Location Location { get; set; }
 }

@@ -5,16 +5,15 @@ namespace Application.Mappers;
 
 public class UserMapper
 {
-    public static UserDto ToUserGetDto(User dto)
+    public static UserGetDto ToUserGetDto(User dto)
     {
-        return new UserDto
+        return new UserGetDto
         {
             FirstName = dto.FirstName,
             SecondName = dto.SecondName,
             UserName = dto.UserName,
             PhoneNumber = dto.PhoneNumber,
             Email = dto.Email,
-            Age = dto.Age,
             Role = dto.Role.Name,
         };
     }
