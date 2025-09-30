@@ -23,19 +23,10 @@ public class LocationService : ILocationService
 
     public async Task UpdateLocationAsync(LocationUpdateDto dto)
     {
-        var entity = new Location
-        {
-            Id = dto.Id,
-            Country = dto.Country,
-            City = dto.City,
-            District = dto.District,
-            Street = dto.Street,
-            HouseNumber = dto.HouseNumber,
-            ZipCode = dto.ZipCode
-        };
-
+        var entity = LocationMapper.ToLocationEntity(dto);
         await _locationRepository.UpdateLocationAsync(entity);
     }
+
 
     public async Task DeleteLocationAsync(long id)
     {

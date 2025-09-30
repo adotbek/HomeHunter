@@ -30,6 +30,19 @@ public class LocationMapper
             ZipCode = location.ZipCode,
         };
     }
+    public static Location ToLocationEntity(LocationUpdateDto dto)
+    {
+        return new Location
+        {
+            Id = dto.Id,
+            Country = dto.Country,
+            City = dto.City,
+            District = dto.District,
+            Street = dto.Street,
+            HouseNumber = dto.HouseNumber,
+            ZipCode = dto.ZipCode
+        };
+    }
 
 }
 
