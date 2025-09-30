@@ -19,6 +19,22 @@ public class HomeMapper
             CategoryId = dto.CategoryId
         };
     }
+    public static Home ToHomeEntity(HomeUpdateDto dto)
+    {
+        return new Home
+        {
+            Id = dto.Id,
+            Bio = dto.Bio,
+            Type = dto.Type,
+            Price = dto.Price,
+            OwnerNumber = dto.OwnerNumber,
+            NumberOfRooms = dto.NumberOfRooms,
+            IsAvailable = dto.IsAvailable,
+            LocationId = dto.LocationId,
+            CategoryId = dto.CategoryId,
+            Images = dto.ImageUrls.Select(url => new Image { ImageUrl = url, HomeId = dto.Id }).ToList()
+        };
+    }
     public static HomeDto ToHomeDto(Home home)
     {
         return new HomeDto

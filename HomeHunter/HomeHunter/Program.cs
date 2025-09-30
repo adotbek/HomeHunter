@@ -1,3 +1,4 @@
+using HomeHunter.Configurations;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +18,13 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+
+builder.ConfigureDataBase();
+builder.ConfigurationJwtAuth();
+builder.ConfigureJwtSettings();
+builder.ConfigureSerilog();
+builder.Services.ConfigureDependecies();
 
 
 

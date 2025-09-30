@@ -1,6 +1,7 @@
 ﻿using Application.Dtos;
 using Application.Interfaces;
 using Application.Interfaces.Repositories;
+using Application.Mappers;
 using Domain.Entities;
 
 namespace Application.Services;
@@ -34,13 +35,8 @@ public class CategoryService : ICategoryService
         if (string.IsNullOrWhiteSpace(dto.Name))
             throw new ArgumentException("Category name cannot be empty.");
 
-        var category = new Category
-        {
-            Id = dto.Id,
-            Name = dto.Name
-        };
-
-        await _repository.UpdateCategoryAsync(category);
+        var entity = CategoryMapper.ToCategoryEntity(dto);
+        await _repository.UpdateCategoryAsync(entity);
     }
 
     public async Task DeleteCategoryAsync(long id)
@@ -54,32 +50,18 @@ public class CategoryService : ICategoryService
     public async Task<CategoryDto?> GetByIdAsync(long id)
     {
         var category = await _repository.GetByIdAsync(id);
-        return category == null ? null : new CategoryDto
-        {
-            Id = category.Id,
-            Name = category.Name
-        };
+        return category == null ? null : CategoryMapper.ToCategoryDto(category);
     }
 
     public async Task<CategoryDto?> GetByNameAsync(string name)
     {
         var category = await _repository.GetByNameAsync(name);
-        return category == null ? null : new CategoryDto
-        {
-            Id = category.Id,
-            Name = category.Name
-        };
+        return category == null ? null : CategoryMapper.ToCategoryDto(category);
     }
 
     public async Task<ICollection<CategoryDto>> GetAllAsync()
     {
         var categories = await _repository.GetAllAsync();
-        return categories
-            .Select(c => new CategoryDto
-            {
-                Id = c.Id,
-                Name = c.Name
-            })
-            .ToList();
+        return categories.Select(CategoryMapper.ToCategoryDto).ToList();
     }
 }

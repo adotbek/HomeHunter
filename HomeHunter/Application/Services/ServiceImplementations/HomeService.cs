@@ -30,20 +30,7 @@ public class HomeService : IHomeService
 
     public async Task UpdateHomeAsync(HomeUpdateDto dto)
     {
-        var entity = new Home
-        {
-            Id = dto.Id,
-            Bio = dto.Bio,
-            Type = dto.Type,
-            Price = dto.Price,
-            OwnerNumber = dto.OwnerNumber,
-            NumberOfRooms = dto.NumberOfRooms,
-            IsAvailable = dto.IsAvailable,
-            LocationId = dto.LocationId,
-            CategoryId = dto.CategoryId,
-            Images = dto.ImageUrls.Select(url => new Image { ImageUrl = url, HomeId = dto.Id }).ToList()
-        };
-
+        var entity = HomeMapper.ToHomeEntity(dto);
         await _homeRepository.UpdateHomeAsync(entity);
     }
 
