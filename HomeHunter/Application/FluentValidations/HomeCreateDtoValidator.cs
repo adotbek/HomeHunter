@@ -1,14 +1,14 @@
 ﻿using Application.Dtos;
 using FluentValidation;
 
-public class HomeDtoValidator : AbstractValidator<HomeDto>
+public class HomeCreateDtoValidator : AbstractValidator<HomeCreateDto>
 {
-    public HomeDtoValidator(bool isUpdate = false)
+    public HomeCreateDtoValidator(bool isUpdate = false)
     {
         if (isUpdate)
         {
-            RuleFor(x => x.Id)
-                .GreaterThan(0).WithMessage("Invalid user ID");
+            //RuleFor(x => x.Id)
+            //    .GreaterThan(0).WithMessage("Invalid user ID");
         }
 
         RuleFor(x => x.Type)

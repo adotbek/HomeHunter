@@ -31,26 +31,6 @@ public static class CategoryEndpoints
             return category is null ? Results.NotFound() : Results.Ok(category);
         })
         .WithName("GetCategoryByName");
-
-        group.MapPost("/create", async (string name, ICategoryService service) =>
-        {
-            var id = await service.AddCategoryAsync(name);
-            return Results.Ok(new { CategoryId = id });
-        })
-        .WithName("CreateCategory");
-
-        group.MapPut("/update", async (CategoryDto dto, ICategoryService service) =>
-        {
-            await service.UpdateCategoryAsync(dto);
-            return Results.Ok(new { Message = "Category updated successfully" });
-        })
-        .WithName("UpdateCategory");
-
-        group.MapDelete("/delete/{id:long}", async (long id, ICategoryService service) =>
-        {
-            await service.DeleteCategoryAsync(id);
-            return Results.Ok(new { Message = "Category deleted successfully" });
-        })
-        .WithName("DeleteCategory");
+    
     }
 }
